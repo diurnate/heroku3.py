@@ -233,7 +233,6 @@ class HerokuCore(object):
         if r.status_code == 206 and 'Next-Range' in r.headers and not limit:
             # We have unexpected chunked response - deal with it
             valrange = r.headers['Next-Range']
-            print("Warning Response was chunked, Loading the next Chunk using the following next-range header returned by Heroku '{0}'. WARNING - This breaks randomly depending on your order_by name. I think it's only guarenteed to work with id's - Looks to be a Heroku problem".format(valrange))
             new_items = self._get_data(resource, params=params, legacy=legacy, order_by=order_by, limit=limit, valrange=valrange, sort=sort)
             items.extend(new_items)
 
