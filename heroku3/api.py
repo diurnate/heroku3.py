@@ -7,13 +7,13 @@ heroku3.api
 This module provides the basic API interface for Heroku.
 """
 
+import json
 import sys
 from pprint import pprint  # noqa
 
 import requests
 from requests.exceptions import HTTPError
 
-from .compat import json
 from .helpers import is_collection
 from .models import Plan, RateLimit
 from .models.account import Account
@@ -322,7 +322,7 @@ class Heroku(HerokuCore):
                 except:
                     raise
                 else:
-                    print("Warning - {0:s}".format(e))
+                    print("Warning - {0:s}".format(str(e)))
             else:
                 raise
         return app
