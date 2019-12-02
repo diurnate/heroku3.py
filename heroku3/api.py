@@ -7,13 +7,13 @@ heroku3.api
 This module provides the basic API interface for Heroku.
 """
 
+import json
 import sys
 from pprint import pprint  # noqa
 
 import requests
 from requests.exceptions import HTTPError
 
-from .compat import json
 from .helpers import is_collection
 from .models import Plan, RateLimit
 from .models.account import Account
@@ -233,7 +233,6 @@ class HerokuCore(object):
         if r.status_code == 206 and 'Next-Range' in r.headers and not limit:
             # We have unexpected chunked response - deal with it
             valrange = r.headers['Next-Range']
-            print("Warning Response was chunked, Loading the next Chunk using the following next-range header returned by Heroku '{0}'. WARNING - This breaks randomly depending on your order_by name. I think it's only guarenteed to work with id's - Looks to be a Heroku problem".format(valrange))
             new_items = self._get_data(resource, params=params, legacy=legacy, order_by=order_by, limit=limit, valrange=valrange, sort=sort)
             items.extend(new_items)
 
@@ -323,7 +322,7 @@ class Heroku(HerokuCore):
                 except:
                     raise
                 else:
-                    print("Warning - {0:s}".format(e))
+                    print("Warning - {0:s}".format(str(e)))
             else:
                 raise
         return app
